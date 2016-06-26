@@ -1,0 +1,42 @@
+<html ng-app='myApp'>
+  <head>
+    <meta charset="utf-8">
+    <title>Assignment App</title>
+    <script src="vendors/angular.min.js" charset="utf-8"></script>
+    <script src="scripts/pets.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <h1> Pets </h1>
+    <div ng-controller ="petController">
+       <form>
+       <label for="newPet"> Add your pet here </label>
+       <input type="text" name="name" ng-model="name" placeholder="Goes by">
+       <input type="text" name="animal" ng-model="animal" placeholder="What kind of creature?">
+       <input type="text" name="age" ng-model="age" placeholder="How old is you bebe?">
+       <input type="text" name="url" ng-model="url" placeholder="Url of your pet ">
+       <button type="button" name="button" ng-click='addPet();'> Add Pet </button>
+     </form>
+      <table id="petTable">
+         <thead>
+           <tr>
+             <th>Pet Name</th>
+             <th>Animal</th>
+             <th>Age</th>
+             <th>Picture</th>
+           </tr>
+         </thead>
+       <tbody>
+         <tr ng-repeat="record in petArray" >
+           <td> {{ record.name }} </td>
+           <td> {{ record.animal }} </td>
+           <td> {{ record.age }} </td>
+           <td> <img ng-src = "{{ record.url }}" alt="{{ record.name }}'s photo" </td>
+           <td>
+            <input type="button" value="Remove" class="btn btn-primary" ng-click = "removeRow($index)"/>
+           </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </body>
+  </html>
