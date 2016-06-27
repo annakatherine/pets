@@ -30,7 +30,6 @@ app.get( '/', function ( req, res ){
 // static folder
 app.use( express.static( 'public' ) );
 
-
 app.post( '/postPet', function( req, res ){
   console.log( 'in postPet assignment ' + req.body.name );
   var petAdded = {
@@ -55,7 +54,19 @@ app.get( '/getPet', function( req, res ){
   });
 });
 //-----------------------------------
-app.delete( '/deletePet', function ( req, res ){
-  console.log( ' in delete pet, deletedPet ' );
-  petSchema.remove( { _id: 'deletedPet' });
+app.post( '/deletePet', function ( req, res ){
+  console.log( ' in app.delete, req.body.id: ' + req.body );
+  petModels.findOne({'_id': req.body.id}, function(err, pet){
+    if(err){
+      console.log(err);
+    }else{
+      petModels.remove({'_id': req.body.id},
+      function(err){
+        if(err){
+          console.log('remove ' + err);
+        }else{
+        }
+      });
+    }
+  });
 });

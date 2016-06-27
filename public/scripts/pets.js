@@ -1,10 +1,20 @@
 console.log( 'js sourced ');
-
 var myApp=angular.module( 'myApp', [] );
-
 myApp.controller( 'petController', [ '$scope', '$http', function( $scope, $http ){
-    $scope.petArray = [];
-    // get user input on button click
+  event.preventDefault();
+
+        var loadAnimals = function(){ $http({
+              method: 'GET',
+              url: ('/getPet'),
+            }).then(function (response) {
+              $scope.petArray = response.data;
+              console.log( 'in getPets call, $scope.petArray: '+ $scope.petArray );
+            });
+        };//end loadAnimals
+        loadAnimals();
+//set empty array to be filled by
+  $scope.petArray = [];
+  // get user input on button click
     $scope.addPet = function(){
       console.log( 'addPet clicked' );
       event.preventDefault();
@@ -26,25 +36,22 @@ myApp.controller( 'petController', [ '$scope', '$http', function( $scope, $http 
       $scope.animal='';
       $scope.age='';
       $scope.url='';
+      loadAnimals();
 
 //------------------------------------------------------------------
 
-      $http({
-        method: 'GET',
-        url: ('/getPet'),
-      }).then(function (response) {
-        $scope.petArray = response.data;
-        console.log( 'in getPets call, $scope.petArray: '+ $scope.petArray );
-      });
-    };
-
     $scope.removeRow = function(index){
+      event.preventDefault();
+      var petToDelete = $scope.petArray[index];
       console.log('deleted pet clicked ');
       $scope.petArray.splice( index, 1 );
+      var petId = { id: petToDelete._id };
+      console.log( 'petId: ' + petId.id );
         $http({
-      method: 'DELETE',
+      method: 'POST',
       url: ('/deletePet'),
-      // data: deletedPet
+      data: petId
     }); //end http remove pet
-  };//end of removePet function
-}]); //end of controller
+   };//end of removePet function
+  };
+}]); //end of petController
